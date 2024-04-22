@@ -1,5 +1,7 @@
 package edu.jsu.mcis.cs408.crosswordmagic.model;
 
+import android.util.Log;
+
 import java.util.HashMap;
 
 public class Word {
@@ -11,8 +13,8 @@ public class Word {
     public Word(HashMap<String, String> params) {
 
         try {
-
             this.id = Integer.parseInt(params.get("_id"));
+
             this.puzzleid = Integer.parseInt(params.get("puzzleid"));
             this.row = Integer.parseInt(params.get("row"));
             this.column = Integer.parseInt(params.get("column"));
@@ -21,6 +23,7 @@ public class Word {
             this.clue = params.get("clue");
 
             this.direction = WordDirection.values()[Integer.parseInt(params.get("direction"))];
+
 
         }
         catch (Exception e) {

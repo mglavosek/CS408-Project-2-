@@ -5,15 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.beans.PropertyChangeEvent;
 
+import edu.jsu.mcis.cs408.crosswordmagic.R;
 import edu.jsu.mcis.cs408.crosswordmagic.controller.CrosswordMagicController;
 import edu.jsu.mcis.cs408.crosswordmagic.databinding.ActivityMainBinding;
 import edu.jsu.mcis.cs408.crosswordmagic.model.CrosswordMagicModel;
 
 public class MainActivity extends AppCompatActivity implements AbstractView {
-
 
     private final String TAG = "MainActivity";
 
@@ -33,29 +34,42 @@ public class MainActivity extends AppCompatActivity implements AbstractView {
 
         controller = new CrosswordMagicController();
 
-        CrosswordMagicModel model = new CrosswordMagicModel(this);
+        Integer puzzleid = 0;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            puzzleid = extras.getInt("puzzleid");
+        }
+
+        CrosswordMagicModel model = new CrosswordMagicModel(this, puzzleid);
 
         /* Register View(s) and Model(s) with Controller */
 
         controller.addModel(model);
         controller.addView(this);
 
-        /* Get Test Property (tests MVC framework) */
-
-        controller.getTestProperty(CrosswordMagicController.TEST_PROPERTY);
-
     }
+
+    public CrosswordMagicController getController() { return controller; }
 
     @Override
     public void modelPropertyChange(final PropertyChangeEvent evt) {
 
         String name = evt.getPropertyName();
-        String value = evt.getNewValue().toString();
+        Object value = evt.getNewValue();
 
-        if (name.equals(CrosswordMagicController.TEST_PROPERTY)) {
+        String message;
 
-            binding.output.setText("Number of Words in Default Puzzle: " + value);
+        if(name.equals(CrosswordMagicController.GUESS_PROPERTY)){
 
+            if (value.toString().isEmpty()) {
+                message = getResources().getString(R.string.wrong_guess);
+            }
+            else {
+                message = getResources().getString(R.string.right_guess);
+            }
+            Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+            toast.show();
         }
 
     }

@@ -28,7 +28,7 @@ public class DAOProperties {
     }
 
     String getProperty(String key) {
-        
+
         String fullKey = prefix + "." + key;
         String property = PROPERTIES.getProperty(fullKey);
 
@@ -36,7 +36,7 @@ public class DAOProperties {
             property = null;
 
         return property;
-        
+
     }
 
 }

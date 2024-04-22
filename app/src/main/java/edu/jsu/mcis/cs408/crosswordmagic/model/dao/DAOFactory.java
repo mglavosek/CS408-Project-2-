@@ -1,12 +1,9 @@
 package edu.jsu.mcis.cs408.crosswordmagic.model.dao;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -47,8 +44,6 @@ public class DAOFactory extends SQLiteOpenHelper {
         db.execSQL(properties.getProperty("sql_create_words_table"));
         db.execSQL(properties.getProperty("sql_create_guesses_table"));
 
-        PuzzleDAO puzzleDAO = new PuzzleDAO(this);
-
         addInitialDataFromCSV(db);
 
     }
@@ -71,6 +66,8 @@ public class DAOFactory extends SQLiteOpenHelper {
     public WordDAO getWordDAO() {
         return new WordDAO(this);
     }
+
+    public GuessDAO getGuessDAO() { return new GuessDAO(this); }
 
     public String getProperty(String key) {
         return (properties.getProperty(key));
@@ -116,11 +113,13 @@ public class DAOFactory extends SQLiteOpenHelper {
 
                         params = new HashMap<>();
 
-                        /*
-
-                        INSERT YOUR CODE HERE
-
-                         */
+                        params.put(properties.getProperty("sql_field_puzzleid"), String.valueOf(puzzleid));
+                        params.put(properties.getProperty("sql_field_row"), fields[0]);
+                        params.put(properties.getProperty("sql_field_column"), fields[1]);
+                        params.put(properties.getProperty("sql_field_box"), fields[2]);
+                        params.put(properties.getProperty("sql_field_direction"), fields[3]);
+                        params.put(properties.getProperty("sql_field_word"), fields[4]);
+                        params.put(properties.getProperty("sql_field_clue"), fields[5]);
 
                         wordDAO.create(db, params);
 

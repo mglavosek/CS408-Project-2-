@@ -1,5 +1,7 @@
 package edu.jsu.mcis.cs408.crosswordmagic.model;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -53,7 +55,6 @@ public class Puzzle {
     }
 
     public void addWordToPuzzle(Word word) {
-
         String key = (word.getBox() + word.getDirection().toString());
 
         /* add to collection */
@@ -95,10 +96,6 @@ public class Puzzle {
             cluesDownBuffer.append(word.getClue()).append(System.lineSeparator());
         }
 
-        /* add word to guessed list (for development only!) */
-
-        addWordToGuessed(key); // remove this later!
-
     }
 
     public WordDirection checkGuess(Integer num, String guess) {
@@ -118,7 +115,7 @@ public class Puzzle {
         if (across != null) {
             if (across.getWord().equals(guess) && !(guessed.contains(acrossKey))) {
                 result = WordDirection.ACROSS;
-                addWordToGuessed(downKey);
+                addWordToGuessed(acrossKey);
             }
         }
 
